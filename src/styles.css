@@ -62,26 +62,31 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 1rem;
+  --background: oklch(0.99 0.02 90);
+  --foreground: oklch(0.2 0.05 260);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.2 0.05 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.2 0.05 260);
+  --primary: oklch(0.62 0.22 30);
+  --primary-foreground: oklch(0.99 0.01 90);
+  --primary-glow: oklch(0.75 0.18 55);
+  --secondary: oklch(0.7 0.18 155);
+  --secondary-foreground: oklch(0.15 0.05 155);
+  --accent: oklch(0.75 0.18 85);
+  --accent-foreground: oklch(0.2 0.05 260);
+  --muted: oklch(0.96 0.02 80);
+  --muted-foreground: oklch(0.45 0.04 260);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.9 0.03 80);
+  --input: oklch(0.9 0.03 80);
+  --ring: oklch(0.62 0.22 30);
+  --gradient-hero: linear-gradient(135deg, oklch(0.62 0.22 30), oklch(0.75 0.18 55) 50%, oklch(0.7 0.18 155));
+  --gradient-card: linear-gradient(145deg, oklch(1 0 0), oklch(0.97 0.03 80));
+  --shadow-playful: 0 20px 45px -15px oklch(0.62 0.22 30 / 0.35);
+  --shadow-soft: 0 8px 24px -8px oklch(0.2 0.05 260 / 0.15);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -95,6 +100,16 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+@theme inline {
+  --color-primary-glow: var(--primary-glow);
+  --background-image-hero: var(--gradient-hero);
+  --background-image-card: var(--gradient-card);
+  --shadow-playful: var(--shadow-playful);
+  --shadow-soft: var(--shadow-soft);
+  --font-display: "Fredoka", ui-sans-serif, system-ui;
+  --font-sans: "Nunito", ui-sans-serif, system-ui;
 }
 
 .dark {
