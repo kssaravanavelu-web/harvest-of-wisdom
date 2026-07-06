@@ -14,13 +14,207 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      badges: {
+        Row: {
+          description: string
+          icon: string
+          id: string
+          name: string
+          slug: string
+          xp_threshold: number
+        }
+        Insert: {
+          description: string
+          icon?: string
+          id?: string
+          name: string
+          slug: string
+          xp_threshold?: number
+        }
+        Update: {
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          slug?: string
+          xp_threshold?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          class_level: number | null
+          created_at: string
+          display_name: string
+          id: string
+          last_active: string | null
+          streak_days: number
+          total_xp: number
+          village: string | null
+        }
+        Insert: {
+          class_level?: number | null
+          created_at?: string
+          display_name?: string
+          id: string
+          last_active?: string | null
+          streak_days?: number
+          total_xp?: number
+          village?: string | null
+        }
+        Update: {
+          class_level?: number | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          last_active?: string | null
+          streak_days?: number
+          total_xp?: number
+          village?: string | null
+        }
+        Relationships: []
+      }
+      quest_completions: {
+        Row: {
+          completed_at: string
+          id: string
+          quest_id: string
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          quest_id: string
+          user_id: string
+          xp_earned?: number
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          quest_id?: string
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quest_completions_quest_id_fkey"
+            columns: ["quest_id"]
+            isOneToOne: false
+            referencedRelation: "quests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quests: {
+        Row: {
+          correct_index: number
+          description: string
+          difficulty: string
+          id: string
+          options: Json
+          question: string
+          sort_order: number
+          subject_id: string
+          title: string
+          xp_reward: number
+        }
+        Insert: {
+          correct_index: number
+          description: string
+          difficulty?: string
+          id?: string
+          options: Json
+          question: string
+          sort_order?: number
+          subject_id: string
+          title: string
+          xp_reward?: number
+        }
+        Update: {
+          correct_index?: number
+          description?: string
+          difficulty?: string
+          id?: string
+          options?: Json
+          question?: string
+          sort_order?: number
+          subject_id?: string
+          title?: string
+          xp_reward?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quests_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subjects: {
+        Row: {
+          color: string
+          description: string | null
+          icon: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          color?: string
+          description?: string | null
+          icon?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          color?: string
+          description?: string | null
+          icon?: string
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      complete_quest: { Args: { _quest_id: string }; Returns: Json }
     }
     Enums: {
       [_ in never]: never
