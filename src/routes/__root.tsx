@@ -82,9 +82,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "VidyaQuest turns lessons into quests, badges, and streaks — a joyful, offline-friendly learning platform designed for rural classrooms." },
       { name: "author", content: "VidyaQuest" },
       { property: "og:title", content: "VidyaQuest — Gamified Learning for Rural Schools" },
-      { property: "og:description", content: "Quests, badges and streaks that make learning irresistible in every village classroom." },
+      { property: "og:description", content: "VidyaQuest turns lessons into quests, badges, and streaks — a joyful, offline-friendly learning platform designed for rural classrooms." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "VidyaQuest — Gamified Learning for Rural Schools" },
+      { name: "twitter:description", content: "VidyaQuest turns lessons into quests, badges, and streaks — a joyful, offline-friendly learning platform designed for rural classrooms." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/e64fb02b-ea98-4361-b51e-9b3c164cdaba" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/e64fb02b-ea98-4361-b51e-9b3c164cdaba" },
     ],
     links: [
       {
