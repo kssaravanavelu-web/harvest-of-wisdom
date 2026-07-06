@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImage from "@/assets/hero.jpg";
 import { Trophy, Sparkles, Wifi, Languages, Rocket, Star, Flame, Award, BookOpen, Users, Target, Heart } from "lucide-react";
@@ -51,9 +52,9 @@ function Index() {
             <a href="#how" className="hover:text-foreground transition">How it works</a>
             <a href="#impact" className="hover:text-foreground transition">Impact</a>
           </nav>
-          <button className="rounded-full px-5 py-2 text-sm font-bold text-primary-foreground shadow-[var(--shadow-playful)] transition hover:scale-105" style={{ background: "var(--gradient-hero)" }}>
+          <Link to="/auth" className="rounded-full px-5 py-2 text-sm font-bold text-primary-foreground shadow-[var(--shadow-playful)] transition hover:scale-105" style={{ background: "var(--gradient-hero)" }}>
             Start Playing
-          </button>
+          </Link>
         </div>
       </header>
 
@@ -74,12 +75,12 @@ function Index() {
               and climb village leaderboards — in their own language, even without internet.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <button className="rounded-full px-7 py-3.5 text-base font-bold text-primary-foreground shadow-[var(--shadow-playful)] transition hover:-translate-y-0.5" style={{ background: "var(--gradient-hero)" }}>
+              <Link to="/auth" className="rounded-full px-7 py-3.5 text-base font-bold text-primary-foreground shadow-[var(--shadow-playful)] transition hover:-translate-y-0.5" style={{ background: "var(--gradient-hero)" }}>
                 Try a Quest Free
-              </button>
-              <button className="rounded-full px-7 py-3.5 text-base font-bold bg-card border-2 border-border hover:border-primary transition">
+              </Link>
+              <Link to="/auth" className="rounded-full px-7 py-3.5 text-base font-bold bg-card border-2 border-border hover:border-primary transition">
                 For Teachers →
-              </button>
+              </Link>
             </div>
             <div className="mt-10 flex gap-8">
               {[{n:"12k+",l:"Young Learners"},{n:"98%",l:"Come back daily"},{n:"10",l:"Languages"}].map(s=>(
@@ -208,12 +209,12 @@ function Index() {
           </h2>
           <p className="mt-5 text-muted-foreground max-w-xl mx-auto">Set up in 10 minutes on a shared tablet or Android phone. No IT team required.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <button className="rounded-full px-8 py-4 text-base font-bold text-primary-foreground shadow-[var(--shadow-playful)] hover:-translate-y-0.5 transition" style={{ background: "var(--gradient-hero)" }}>
+            <Link to="/auth" className="rounded-full px-8 py-4 text-base font-bold text-primary-foreground shadow-[var(--shadow-playful)] hover:-translate-y-0.5 transition" style={{ background: "var(--gradient-hero)" }}>
               Enroll my school
-            </button>
-            <button className="rounded-full px-8 py-4 text-base font-bold bg-transparent border-2 border-border hover:border-primary transition">
+            </Link>
+            <Link to="/auth" className="rounded-full px-8 py-4 text-base font-bold bg-transparent border-2 border-border hover:border-primary transition">
               Watch 2-min demo
-            </button>
+            </Link>
           </div>
         </div>
       </section>
