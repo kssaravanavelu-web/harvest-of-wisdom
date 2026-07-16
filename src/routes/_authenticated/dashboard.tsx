@@ -269,6 +269,32 @@ function Dashboard() {
           </div>
         </div>
       )}
+
+      {showOnboard && (
+        <div className="fixed inset-0 z-50 bg-foreground/60 backdrop-blur-sm grid place-items-center p-4">
+          <div className="w-full max-w-md rounded-3xl bg-card p-8 shadow-[var(--shadow-playful)]">
+            <div className="flex items-center gap-2 text-primary"><School className="w-5 h-5" /><span className="text-xs font-bold uppercase tracking-widest">Set up your school</span></div>
+            <h3 className="mt-2 text-2xl font-bold" style={{ fontFamily: "var(--font-display)" }}>Join or create a school</h3>
+            <div className="mt-5 grid grid-cols-2 gap-2 p-1 bg-muted rounded-xl">
+              <button onClick={() => setObMode("join")} className={`py-2 rounded-lg font-bold text-sm ${obMode === "join" ? "bg-card shadow" : "text-muted-foreground"}`}>Join with code</button>
+              <button onClick={() => setObMode("create")} className={`py-2 rounded-lg font-bold text-sm ${obMode === "create" ? "bg-card shadow" : "text-muted-foreground"}`}>Create school</button>
+            </div>
+            {obMode === "join" ? (
+              <div className="mt-5 space-y-3">
+                <p className="text-sm text-muted-foreground">Enter the teacher or student code from your school admin.</p>
+                <input value={obCode} onChange={e => setObCode(e.target.value)} placeholder="e.g. S-A1B2C3" className="w-full px-4 py-3 rounded-xl border border-border bg-background uppercase font-mono" />
+                <button disabled={obBusy} onClick={doJoin} className="w-full py-3 rounded-xl font-bold text-primary-foreground shadow-[var(--shadow-soft)] disabled:opacity-50" style={{ background: "var(--gradient-hero)" }}>Join school</button>
+              </div>
+            ) : (
+              <div className="mt-5 space-y-3">
+                <p className="text-sm text-muted-foreground">You'll be the school admin and can invite teachers & students with the generated codes.</p>
+                <input value={obName} onChange={e => setObName(e.target.value)} placeholder="School name" className="w-full px-4 py-3 rounded-xl border border-border bg-background" />
+                <button disabled={obBusy} onClick={doCreate} className="w-full py-3 rounded-xl font-bold text-primary-foreground shadow-[var(--shadow-soft)] disabled:opacity-50" style={{ background: "var(--gradient-hero)" }}>Create school</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
