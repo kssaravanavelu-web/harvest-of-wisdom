@@ -1,14 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, Rocket, BookOpen, Languages, Trophy, Flame, Star, Award, LogOut, Check, Lock } from "lucide-react";
+import { Sparkles, Rocket, BookOpen, Languages, Trophy, Flame, Star, Award, LogOut, Check, Lock, Video, School } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
-type Profile = { id: string; display_name: string; total_xp: number; streak_days: number; village: string | null; class_level: number | null };
+type Profile = { id: string; display_name: string; total_xp: number; streak_days: number; village: string | null; class_level: number | null; school_id: string | null };
 type Subject = { id: string; slug: string; name: string; description: string | null; color: string; icon: string };
 type Quest = { id: string; subject_id: string; title: string; description: string; difficulty: string; xp_reward: number; question: string; options: string[]; correct_index: number; sort_order: number };
 type Badge = { id: string; slug: string; name: string; description: string; icon: string; xp_threshold: number };
@@ -31,6 +31,11 @@ function Dashboard() {
   const [activeSubject, setActiveSubject] = useState<string | null>(null);
   const [openQuest, setOpenQuest] = useState<Quest | null>(null);
   const [pick, setPick] = useState<number | null>(null);
+  const [showOnboard, setShowOnboard] = useState(false);
+  const [obMode, setObMode] = useState<"join" | "create">("join");
+  const [obCode, setObCode] = useState("");
+  const [obName, setObName] = useState("");
+  const [obBusy, setObBusy] = useState(false);
 
   const load = async () => {
     const { data: userData } = await supabase.auth.getUser();
@@ -47,6 +52,7 @@ function Dashboard() {
       supabase.from("profiles").select("id, display_name, total_xp, village").order("total_xp", { ascending: false }).limit(10),
     ]);
     if (p.data) setProfile(p.data as Profile);
+    if (p.data && !(p.data as Profile).school_id) setShowOnboard(true);
     if (s.data) { setSubjects(s.data as Subject[]); if (!activeSubject && s.data[0]) setActiveSubject((s.data[0] as Subject).id); }
     if (q.data) setQuests((q.data as unknown) as Quest[]);
     if (c.data) setCompleted(new Set(c.data.map(r => r.quest_id)));
@@ -80,6 +86,28 @@ function Dashboard() {
     navigate({ to: "/" });
   };
 
+  const doJoin = async () => {
+    if (!obCode.trim()) return;
+    setObBusy(true);
+    const { error } = await supabase.rpc("join_school", { _code: obCode.trim().toUpperCase() });
+    setObBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success("Joined school!");
+    setShowOnboard(false);
+    await load();
+  };
+  const doCreate = async () => {
+    if (!obName.trim()) return;
+    setObBusy(true);
+    const { data, error } = await supabase.rpc("create_school", { _name: obName.trim() });
+    setObBusy(false);
+    if (error) return toast.error(error.message);
+    const r = data as { teacher_code: string; student_code: string };
+    toast.success(`School created! Teacher code: ${r.teacher_code} · Student code: ${r.student_code}`);
+    setShowOnboard(false);
+    await load();
+  };
+
   const level = profile ? Math.floor(profile.total_xp / 100) + 1 : 1;
   const levelProgress = profile ? profile.total_xp % 100 : 0;
   const subjectQuests = quests.filter(q => q.subject_id === activeSubject);
@@ -94,9 +122,13 @@ function Dashboard() {
             </div>
             <span className="text-xl font-bold" style={{ fontFamily: "var(--font-display)" }}>VidyaQuest</span>
           </Link>
-          <button onClick={signOut} className="text-sm font-semibold text-muted-foreground hover:text-foreground flex items-center gap-2">
-            <LogOut className="w-4 h-4" /> Sign out
-          </button>
+          <div className="flex items-center gap-5">
+            <Link to="/dashboard" className="text-sm font-bold text-foreground flex items-center gap-1.5"><Trophy className="w-4 h-4" />Quests</Link>
+            <Link to="/lessons" className="text-sm font-bold text-muted-foreground hover:text-foreground flex items-center gap-1.5"><Video className="w-4 h-4" />Lessons</Link>
+            <button onClick={signOut} className="text-sm font-semibold text-muted-foreground hover:text-foreground flex items-center gap-2">
+              <LogOut className="w-4 h-4" /> Sign out
+            </button>
+          </div>
         </div>
       </header>
 
