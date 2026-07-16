@@ -41,6 +41,82 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_questions: {
+        Row: {
+          correct_index: number
+          id: string
+          lesson_id: string
+          options: Json
+          question: string
+          sort_order: number
+        }
+        Insert: {
+          correct_index: number
+          id?: string
+          lesson_id: string
+          options: Json
+          question: string
+          sort_order?: number
+        }
+        Update: {
+          correct_index?: number
+          id?: string
+          lesson_id?: string
+          options?: Json
+          question?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_questions_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "video_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lesson_submissions: {
+        Row: {
+          answers: Json
+          id: string
+          lesson_id: string
+          score: number
+          student_id: string
+          submitted_at: string
+          total: number
+          xp_earned: number
+        }
+        Insert: {
+          answers: Json
+          id?: string
+          lesson_id: string
+          score: number
+          student_id: string
+          submitted_at?: string
+          total: number
+          xp_earned?: number
+        }
+        Update: {
+          answers?: Json
+          id?: string
+          lesson_id?: string
+          score?: number
+          student_id?: string
+          submitted_at?: string
+          total?: number
+          xp_earned?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_submissions_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "video_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           class_level: number | null
@@ -48,6 +124,7 @@ export type Database = {
           display_name: string
           id: string
           last_active: string | null
+          school_id: string | null
           streak_days: number
           total_xp: number
           village: string | null
@@ -58,6 +135,7 @@ export type Database = {
           display_name?: string
           id: string
           last_active?: string | null
+          school_id?: string | null
           streak_days?: number
           total_xp?: number
           village?: string | null
@@ -68,11 +146,20 @@ export type Database = {
           display_name?: string
           id?: string
           last_active?: string | null
+          school_id?: string | null
           streak_days?: number
           total_xp?: number
           village?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       quest_completions: {
         Row: {
@@ -153,6 +240,33 @@ export type Database = {
           },
         ]
       }
+      schools: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          student_code: string
+          teacher_code: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          student_code: string
+          teacher_code: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          student_code?: string
+          teacher_code?: string
+        }
+        Relationships: []
+      }
       subjects: {
         Row: {
           color: string
@@ -209,15 +323,123 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          school_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          school_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          school_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_lessons: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          school_id: string
+          subject_id: string | null
+          teacher_id: string
+          title: string
+          video_path: string
+          xp_reward: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          school_id: string
+          subject_id?: string | null
+          teacher_id: string
+          title: string
+          video_path: string
+          xp_reward?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          school_id?: string
+          subject_id?: string | null
+          teacher_id?: string
+          title?: string
+          video_path?: string
+          xp_reward?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_lessons_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_lessons_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
       complete_quest: { Args: { _quest_id: string }; Returns: Json }
+      create_school: { Args: { _name: string }; Returns: Json }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_school_admin: {
+        Args: { _school_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_school_member: {
+        Args: { _school_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_school_teacher: {
+        Args: { _school_id: string; _user_id: string }
+        Returns: boolean
+      }
+      join_school: { Args: { _code: string }; Returns: Json }
+      submit_lesson: {
+        Args: { _answers: Json; _lesson_id: string }
+        Returns: Json
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "teacher" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -344,6 +566,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "teacher", "student"],
+    },
   },
 } as const
